@@ -2,6 +2,8 @@ FROM resin/rpi-raspbian
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
+    git-core \
+    build-essential \
     debhelper \
     autotools-dev \
     autoconf \

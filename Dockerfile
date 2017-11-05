@@ -21,4 +21,4 @@ RUN git clone https://github.com/knxd/knxd.git
 RUN cd knxd && git checkout master && dpkg-buildpackage -b -uc
 RUN cd .. && dpkg -i knxd_*.deb knxd-tools_*.deb
 
-CMD ["knxd", "-e", "1.1.128", "-E", "1.1.129:8", "-D", "-T", "-R", "-S", "-b", "tpuarts:/dev/ttyAMA0"]
+CMD ["/bin/bash"]

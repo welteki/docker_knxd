@@ -1,5 +1,8 @@
 FROM resin/rpi-raspbian
 
+# Create knxd user with UID 1001
+RUN useradd knxd -u 1001 -s /bin/bash -U -M -G dialout
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     git-core \

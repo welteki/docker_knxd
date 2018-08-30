@@ -1,0 +1,24 @@
+FROM resin/__BASEIMAGE_ARCH__-debian:stretch
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+            git-core \
+            build-essential \
+            debhelper \
+            autotools-dev \
+            autoconf \
+            automake \
+            libtool \
+            libusb-1.0-0-dev \
+            pkg-config \
+            libsystemd-dev \
+            dh-systemd \
+            libev-dev \
+            cmake
+
+# Build knxd
+RUN git clone https://github.com/knxd/knxd.git
+RUN cd knxd && git checkout tags/v__VERSION__ && dpkg-buildpackage -b -uc
+RUN cd .. && dpkg -i knxd_*.deb knxd-tools_*.deb
+
+CMD ["/bin/bash"]

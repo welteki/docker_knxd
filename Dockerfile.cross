@@ -1,5 +1,8 @@
 FROM resin/__BASEIMAGE_ARCH__-debian:stretch
 
+LABEL maintainer="Han Verstraete <welteki@outlook.com>" \
+      knxd_version="__VERSION__"
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
             git-core \

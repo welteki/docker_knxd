@@ -1,5 +1,5 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/welteki/knxd.svg)](https://hub.docker.com/r/welteki/knxd)
-[![Build Status](https://travis-ci.org/welteki/docker_knxd.svg?branch=master)](https://travis-ci.com/welteki/docker_knxd.svg?branch=master)
+[![Build Status](https://travis-ci.com/welteki/docker_knxd.svg?branch=master)](https://travis-ci.com/welteki/docker_knxd)
 
 automated build with travis-ci
 
@@ -12,7 +12,7 @@ amd64, arm32v7
 > no need to specify architecture during pull
 
 ### Supported tags
-- `0.14.25`
+- `0.14.25`, `latest`
 - `0.14.25-amd64`
 - `0.14.25-arm32v7`
 

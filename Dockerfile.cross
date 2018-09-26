@@ -1,10 +1,7 @@
-FROM resin/__BASEIMAGE_ARCH__-debian:stretch
+FROM resin/__BASEIMAGE_ARCH__-debian:stretch as builder
 
-LABEL maintainer="Han Verstraete <welteki@outlook.com>" \
-      knxd_version="__VERSION__"
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends\
             git-core \
             build-essential \
             debhelper \
@@ -22,6 +19,21 @@ RUN apt-get update && apt-get install -y \
 # Build knxd
 RUN git clone https://github.com/knxd/knxd.git
 RUN cd knxd && git checkout tags/v__VERSION__ && dpkg-buildpackage -b -uc
-RUN cd .. && dpkg -i knxd_*.deb knxd-tools_*.deb
+
+FROM resin/__BASEIMAGE_ARCH__-debian:stretch
+
+LABEL maintainer="Han Verstraete <welteki@outlook.com>" \
+      knxd_version="__VERSION__"
+
+COPY --from=builder /knxd_*.deb /
+COPY --from=builder /knxd-tools_*.deb /
+
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends\
+            libusb-1.0-0 \
+            libev4 \
+      && rm -rf /var/lib/apt/lists/*
+
+RUN dpkg -i knxd_*.deb knxd-tools_*.deb
 
 CMD ["/bin/bash"]

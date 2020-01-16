@@ -6,8 +6,7 @@ service:
 language: bash
 
 env:
-  - KNXD_VERSION=0.14.29
-  - KNXD_RELEASE_TAG=DEBIAN-0.14.29-5
+  - KNXD_VERSION=0.14.29 KNXD_RELEASE_TAG=DEBIAN-0.14.29-5
 
 before_install:
   - curl -fsSL https://get.docker.com | sh

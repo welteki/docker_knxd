@@ -1,6 +1,5 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/welteki/knxd.svg)](https://hub.docker.com/r/welteki/knxd)
-
-automated build with travis-ci
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/welteki/docker_knxd/build)](https://github.com/welteki/docker_knxd/actions/workflows/build.yaml)
 
 ## knxd
 

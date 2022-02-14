@@ -1,7 +1,7 @@
 FROM debian:buster as builder
 
 ARG KNXD_VERSION
-ARG KNXD_RELEASE_TAG
+ARG KNXD_REF
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends\
@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends\
             cmake
 
 # Build knxd
-RUN git clone https://github.com/knxd/knxd.git
-RUN cd knxd && git checkout tags/$KNXD_RELEASE_TAG && dpkg-buildpackage -b -uc
+RUN git clone -b debian https://github.com/knxd/knxd.git
+RUN cd knxd && git checkout $KNXD_REF && dpkg-buildpackage -b -uc
 
 FROM debian:buster-slim
 

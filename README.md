@@ -1,5 +1,4 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/welteki/knxd.svg)](https://hub.docker.com/r/welteki/knxd)
-[![Build Status](https://travis-ci.com/welteki/docker_knxd.svg?branch=master)](https://travis-ci.com/welteki/docker_knxd)
 
 automated build with travis-ci
 

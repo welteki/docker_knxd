@@ -1,0 +1,49 @@
+name: build
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    env:
+      KNXD_VERSION: "0.14.54"
+      KNXD_REF: "d87f5a1f48e487cb980f5b20996d9cb391dfa764"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          build-args: KNXD_VERSION=${{ env.KNXD_VERSION }},KNXD_REF=${{ env.KNXD_REF }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: welteki/knxd:latest,welteki/knxd:${{ env.KNXD_VERSION }}
+
+      - name: Update repo description
+        if: github.event_name != 'pull_request'
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: welteki/knxd

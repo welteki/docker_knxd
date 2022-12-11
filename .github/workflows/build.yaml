@@ -33,12 +33,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
 
+      - name: Get Repo Owner
+        id: get_repo_owner
+        run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" > $GITHUB_ENV
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
-          outputs: "type=image,push=false"
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           build-args: KNXD_VERSION=${{ env.KNXD_VERSION }},KNXD_REF=${{ env.KNXD_REF }}
           push: ${{ github.ref_type == 'tag' }}

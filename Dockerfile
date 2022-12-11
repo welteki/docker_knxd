@@ -1,4 +1,4 @@
-FROM debian:buster as builder
+FROM debian:bullseye as builder
 
 ARG KNXD_VERSION
 ARG KNXD_REF
@@ -9,14 +9,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends\
             git-core \
             build-essential \
             debhelper \
-            autotools-dev \
             autoconf \
             automake \
-            libtool \
             libusb-1.0-0-dev \
             pkg-config \
             libsystemd-dev \
-            dh-systemd \
             libev-dev \
             cmake
 
@@ -24,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends\
 RUN git clone -b debian https://github.com/knxd/knxd.git
 RUN cd knxd && git checkout $KNXD_REF && dpkg-buildpackage -b -uc
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 LABEL maintainer="Han Verstraete <welteki@pm.me>" \
       knxd_version=$KNXD_VERSION

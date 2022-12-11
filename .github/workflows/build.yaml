@@ -18,8 +18,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      KNXD_VERSION: "0.14.54"
-      KNXD_REF: "d87f5a1f48e487cb980f5b20996d9cb391dfa764"
+      KNXD_VERSION: "0.14.56.2"
+      KNXD_REF: "bdf5e4e8f0a956607a0ac3b18e76a7d4d60f3f94"
     steps:
       - name: Checkout
         uses: actions/checkout@master

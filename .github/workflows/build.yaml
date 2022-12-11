@@ -43,4 +43,5 @@ jobs:
           build-args: KNXD_VERSION=${{ env.KNXD_VERSION }},KNXD_REF=${{ env.KNXD_REF }}
           push: ${{ github.ref_type == 'tag' }}
           tags: |
-            ghcr.io/${{ env.REPO_OWNER }}/knxd:${{ env.KNXD_REF  }},ghcr.io/${{ env.REPO_OWNER }}/knxd:latest
+            ghcr.io/${{ env.REPO_OWNER }}/knxd:${{ env.KNXD_REF  }}
+            ghcr.io/${{ env.REPO_OWNER }}/knxd:latest

@@ -3,47 +3,44 @@ name: build
 on:
   push:
     branches:
-      - "master"
+      - '*'
+    tags:
+      - '*'
   pull_request:
     branches:
-      - "master"
+      - '*'
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
     env:
       KNXD_VERSION: "0.14.54"
       KNXD_REF: "d87f5a1f48e487cb980f5b20996d9cb391dfa764"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
-      - name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
+      - name: Login to Docker Registry
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
 
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
+          file: ./Dockerfile
+          outputs: "type=image,push=false"
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           build-args: KNXD_VERSION=${{ env.KNXD_VERSION }},KNXD_REF=${{ env.KNXD_REF }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: welteki/knxd:latest,welteki/knxd:${{ env.KNXD_VERSION }}
-
-      - name: Update repo description
-        if: github.event_name != 'pull_request'
-        uses: peter-evans/dockerhub-description@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: welteki/knxd
+          push: ${{ github.ref_type == 'tag' }}
+          tags: |
+            ghcr.io/${{ env.REPO_OWNER }}/knxd:${{ env.KNXD_REF  }},ghcr.io/${{ env.REPO_OWNER }}/knxd:latest

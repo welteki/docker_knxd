@@ -33,9 +33,8 @@ jobs:
       - name: Login to Docker Registry
         uses: docker/login-action@v2
         with:
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: ghcr.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get Repo Owner
         id: get_repo_owner
@@ -50,5 +49,13 @@ jobs:
           build-args: KNXD_VERSION=${{ env.KNXD_VERSION }},KNXD_REF=${{ env.KNXD_REF }}
           push: ${{ github.ref_type == 'tag' }}
           tags: |
-            ghcr.io/${{ env.REPO_OWNER }}/knxd:${{ env.KNXD_REF  }}
-            ghcr.io/${{ env.REPO_OWNER }}/knxd:latest
+            welteki/knxd:${{ env.KNXD_REF  }}
+            welteki/knxd:latest
+
+      - name: Update repo description
+        if: ${{ github.ref_type == 'tag' }}
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: welteki/knxd
